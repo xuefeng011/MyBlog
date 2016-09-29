@@ -1,0 +1,606 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next mist">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="从零开始 – 入门篇准备Nodejs开发环境Ubuntu
+Node.js开发框架Express4.x
+Nodejs开发框架Express3.0开发手记–从零开始
+Mongoose使用案例–让JSON数据直接入库MongoDB
+Nodejs对MongoDB模糊查询
+用Nodejs连接MySQL
+Nodejs配合bootstrap-select下拉列表
+nodejs分页设计配合bootstrap-pa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习nodejs之路">
+<meta property="og:url" content="http://yoursite.com/20160928/学习nodejs之路/index.html">
+<meta property="og:site_name" content="Acc">
+<meta property="og:description" content="从零开始 – 入门篇准备Nodejs开发环境Ubuntu
+Node.js开发框架Express4.x
+Nodejs开发框架Express3.0开发手记–从零开始
+Mongoose使用案例–让JSON数据直接入库MongoDB
+Nodejs对MongoDB模糊查询
+用Nodejs连接MySQL
+Nodejs配合bootstrap-select下拉列表
+nodejs分页设计配合bootstrap-pa">
+<meta property="og:updated_time" content="2016-09-27T16:11:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习nodejs之路">
+<meta name="twitter:description" content="从零开始 – 入门篇准备Nodejs开发环境Ubuntu
+Node.js开发框架Express4.x
+Nodejs开发框架Express3.0开发手记–从零开始
+Mongoose使用案例–让JSON数据直接入库MongoDB
+Nodejs对MongoDB模糊查询
+用Nodejs连接MySQL
+Nodejs配合bootstrap-select下拉列表
+nodejs分页设计配合bootstrap-pa">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: 0,
+      author: '峰峰'
+    }
+  };
+</script>
+
+  <title> 学习nodejs之路 | Acc </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Acc</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                学习nodejs之路
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-28T00:10:15+08:00" content="2016-09-28">
+              2016-09-28
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>从零开始 – 入门篇<br>准备Nodejs开发环境Ubuntu</p>
+<p>Node.js开发框架Express4.x</p>
+<p>Nodejs开发框架Express3.0开发手记–从零开始</p>
+<p>Mongoose使用案例–让JSON数据直接入库MongoDB</p>
+<p>Nodejs对MongoDB模糊查询</p>
+<p>用Nodejs连接MySQL</p>
+<p>Nodejs配合bootstrap-select下拉列表</p>
+<p>nodejs分页设计配合bootstrap-paginator</p>
+<p>nodejs豆瓣爬虫</p>
+<p>玩转Nodejs日志管理log4js</p>
+<p>Nginx反向代理Nodejs – log4js日志IP显示错误</p>
+<p>upstart封装nodejs应用为系统服务</p>
+<p>成为高手 – 进阶篇<br>Nodejs基础中间件Connect</p>
+<p>grunt让Nodejs规范起来</p>
+<p>bower解决js的依赖管理</p>
+<p>Yeoman自动构建js项目</p>
+<p>快速创建基于npm的nodejs库</p>
+<p>CNPM搭建私有的NPM服务</p>
+<p>NPM下载出错 No compatible version found</p>
+<p>Nodejs实现websocket的4种方式</p>
+<p>Socket.io在线聊天室</p>
+<p>websocket服务器监控</p>
+<p>Nginx反向代理Websocket</p>
+<p>restify构建REST服务</p>
+<p>jasmine行为驱动,测试先行</p>
+<p>Karma和Jasmine自动化单元测试</p>
+<p>Nodejs服务器管理模块forever</p>
+<p>Express结合Passport实现登陆认证</p>
+<p>Passport现实社交网络OAuth登陆</p>
+<p>Nodejs发邮件组件Nodemailer</p>
+<p>快速排序的Nodejs实现</p>
+<p>桶排序的Nodejs实现</p>
+<p>追根溯源 – 内核篇<br>解读Nodejs多核处理模块cluster</p>
+<p>Nodejs创建HTTPS服务器</p>
+<p>Nodejs异步异常处理domain</p>
+<p>Nodejs加密算法库Crypto</p>
+<p>Node.js缓冲模块Buffer</p>
+<p>Node.js进程通信模块child_process</p>
+<p>跨界应用 – 创造篇<br>Nodejs与R跨平台通信</p>
+<p>tty.js打通浏览器与Linux的通道</p>
+<p>用Highcharts轻松构建交互性图表</p>
+<p>利剑在手 – 工具篇<br>RequireJS异步模块加载</p>
+<p>Nodejs临时文件回收器reap</p>
+<p>Nodejs异步流程控制Async</p>
+<p>Async多任务时间管理</p>
+<p>让Nodejs来管理定时任务later</p>
+<p>wind.js助力异步编程</p>
+<p>UnderscoreJS精巧而强大工具包</p>
+<p>Commander写自己的Nodejs命令</p>
+<p>Stylus让CSS也能编程</p>
+<p>Browserify 跑在浏览器上的Node程序</p>
+<p>Retry优雅的失败重试策略</p>
+<p>用UglifyJS2合并压缩混淆JS代码</p>
+<p>Marked高效的Markdown解析器</p>
+<p>Web技术 – 应用篇<br>Hexo在github上构建免费的Web应用</p>
+<p>Jekyll在github上构建免费的Web应用</p>
+<p>构建自己的Aleax查询服务</p>
+<p>用WebStorm编辑Markdown</p>
+<p>30秒制作幻灯片 Cleaver</p>
+<p>图片延迟加载库Layzr</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/20160927/学习hexo/" rel="next" title="学习hexo">
+                <i class="fa fa-chevron-left"></i> 学习hexo
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/20160928/markdown-学习笔记/" rel="prev" title="markdown 学习笔记">
+                markdown 学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Xue Feng" />
+          <p class="site-author-name" itemprop="name">Xue Feng</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xue Feng</span>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
