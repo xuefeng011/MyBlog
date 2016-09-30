@@ -75,6 +75,6 @@ deploy:
   #backup
 backup:
     type: git
-    theme: maupassant,next
     repository:
-       github: https://github.com/xuefeng011/MyBlog.git,master
+       github: https://github.com/xuefeng011/MyBlog.git
+       branch: master
