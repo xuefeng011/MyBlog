@@ -77,4 +77,4 @@ backup:
     type: git
     theme: maupassant
     repository:
-       github: git@github.com:xuefeng011/MyBlog.git,master
+       github: https://github.com/xuefeng011/MyBlog.git,master
