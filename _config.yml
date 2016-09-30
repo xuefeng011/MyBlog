@@ -72,3 +72,9 @@ deploy:
   type: git
   repo: https://github.com/xuefeng011/xuefeng011.github.io.git
   branch: master
+  #backup
+backup:
+    type: git
+    theme: maupassant
+    repository:
+       github: git@github.com:xuefeng011/MyBlog.git,master
