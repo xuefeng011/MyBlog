@@ -76,5 +76,6 @@ deploy:
 backup:
     type: git
     theme: maupassant
+    message: update MyBlog
     repository:
        github: git@github.com:xuefeng011/MyBlog.git,master
