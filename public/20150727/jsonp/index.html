@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>JSONP error handling with jquery.ajax | Acc</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">JSONP error handling with jquery.ajax</h1><a id="logo" href="/.">Acc</a><p class="description"></p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">JSONP error handling with jquery.ajax</h1><div class="post-meta">Jul 27, 2015<span> | </span><span class="category"><a href="/categories/Coding/">Coding</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><p>这几天想对自己的博客做一些优化，例如我的相册是通过Instagram提供的api以Ajax封装的jsonp跨域请求方式获取照片来展示，但是需要翻墙才能访问，我希望如果用户未翻墙导致访问失败后能够调用error callback展示另一个页面。<a id="more"></a></p>
+<h2 id="PROBLEM"><a href="#PROBLEM" class="headerlink" title="PROBLEM"></a>PROBLEM</h2><p>先看看这段代码，刚开始不管怎么搞都无法进入到<code>error</code>回调函数中。</p>
+<pre><code>$.ajax({
+url: &quot;https://www.google.com.hk/?gws_rd=cr&quot;,
+type: &quot;GET&quot;,
+dataType: &quot;jsonp&quot;,
+success:function(re){
+    alert(&quot;hello success!&quot;);
+},
+error:function(){  
+    alert(&quot;hello error&quot;); 
+},                   
+complete:function() {           
+    alert(&quot;hello complete!&quot;);
+}
+});
+</code></pre><p>注意这里的<code>url</code>是需要翻墙才能访问的，我在打开<code>VPN</code>的情况下访问可以进入<code>success</code>回调，当关闭<code>VPN</code>时报以下错误信息</p>
+<blockquote>
+<p>Failed to load resource: net::ERR_CONNECTION_TIMED_OUT</p>
+</blockquote>
+<p>当然访问失败很正常，但按理说访问失败就应该进入<code>error</code>回调中，而页面却没有任何反应，也没有进入任何<code>callback</code>中。</p>
+<h2 id="DIGNOSE"><a href="#DIGNOSE" class="headerlink" title="DIGNOSE"></a>DIGNOSE</h2><p>先了解下JSONP是个什么东东，她的使用场景和实现原理是什么。<br>由于浏览器同源策略的限制，Ajax无法实现数据的跨域请求，而 HTML 的 <code>&lt;script&gt;</code> 元素是一个例外。利用 <code>&lt;script&gt;</code> 元素的这个开放策略，网页可以得到从其他来源动态产生的JSON 资料。其过程可以简单的描述为: 当需要通讯时，本站脚本创建一个<code>&lt;script&gt;</code>元素，地址指向第三方的API网址，形如： <code>&lt;script src=&quot;http://www.example.net/api?param1=1&amp;param2=2&quot;&gt;&lt;/script&gt;</code> ，并提供一个回调函数来接收数据（函数名可约定，或通过地址参数传递）。 第三方产生的响应为json数据的包装（故称之为jsonp，即json padding），形如： callback({“name”:”hax”,”gender”:”Male”}) 这样浏览器会调用callback函数，并传递解析后json对象作为参数，本站脚本可在callback函数里处理所传入的数据。简单讲就是jsonp通过一种取巧的非正式的方式实现了数据的跨域请求。</p>
+<p>那么jsonp和普通的json数据格式的Ajax请求有什么不同呢？</p>
+<p><strong><code>ajax</code>的核心是通过<code>XmlHttpRequest</code>获取非本页内容，而<code>jsonp</code>的核心则是动态添加<code>&lt;script&gt;</code>标签来调用服务器提供的<code>js</code>脚本。</strong></p>
+<p>而上面我们遇到的问题正是与这两种请求的实现方式不同有关，<a href="http://forum.jquery.com/topic/jquery-ajax-with-datatype-jsonp-will-not-use-error-callback-if-request-fails" target="_blank" rel="external">这个帖子</a>道出其中症结所在</p>
+<blockquote>
+<p>$.ajax() can determine other error scenarios by inspecting the XHR<br>object, but jsonp doesn’t use XHR.</p>
+</blockquote>
+<h2 id="SOLUTION"><a href="#SOLUTION" class="headerlink" title="SOLUTION"></a>SOLUTION</h2><p>如果jsonp方式想在请求失败后触发并执行error callback要怎么实现呢？万能的Google搜到了<a href="http://designwithpc.com/post/11989720389/jsonp-error-handling-with-jqueryajax" target="_blank" rel="external">一个帖子</a>提到了两种可行的方案。</p>
+<ul>
+<li>添加<code>timeout</code>设置<blockquote>
+<p>Timeout after a reasonable amount of time to fire the error callback because it might have failed silently. You may not know what the actual error (or error status) was but at least you get to handle the error.</p>
+</blockquote>
+</li>
+</ul>
+<p>即将之前的代码改成如下即可：</p>
+<pre><code>$.ajax({
+url: &quot;https://www.google.com.hk/?gws_rd=cr&quot;,
+type: &quot;GET&quot;,
+dataType: &quot;jsonp&quot;,
+timeout: 3000    //添加此行
+success:function(re){
+    alert(&quot;hello success!&quot;);
+},
+error:function(){  
+    alert(&quot;hello error&quot;); 
+},                   
+complete:function() {           
+    alert(&quot;hello complete!&quot;);
+}
+});
+</code></pre><ul>
+<li>添加一个<code>jquery-jsonp</code>的插件</li>
+</ul>
+<p>插件地址： <code>jquery-jsonp，https://github.com/jaubourg/jquery-jsonp</code></p>
+<p>将<code>&lt;script src=&quot;https://raw.github.com/jaubourg/jquery-jsonp/master/src/jquery.jsonp.js&quot;&gt;&lt;/script&gt;</code>插入到html头部即可。</p>
+<p>另外还需注意jsonp只支持get不支持post请求。</p>
+<h3 id="REFERENCE"><a href="#REFERENCE" class="headerlink" title="REFERENCE"></a>REFERENCE</h3><ol>
+<li><a href="http://www.kankanews.com/ICkengine/archives/96670.shtml" target="_blank" rel="external">http://www.kankanews.com/ICkengine/archives/96670.shtml</a></li>
+<li><a href="http://forum.jquery.com/topic/jquery-ajax-with-datatype-jsonp-will-not-use-error-callback-if-request-fails" target="_blank" rel="external">http://forum.jquery.com/topic/jquery-ajax-with-datatype-jsonp-will-not-use-error-callback-if-request-fails</a></li>
+<li><a href="http://designwithpc.com/post/11989720389/jsonp-error-handling-with-jqueryajax" target="_blank" rel="external">http://designwithpc.com/post/11989720389/jsonp-error-handling-with-jqueryajax</a></li>
+<li><a href="http://baike.baidu.com/link?url=eXfWWy4ai-a7PkrsYHsqCrRGzRJYoF4l7WJStF4HoTMMwDeMrFtcnOICK0BM1QfwAjluEvrwfV5M9ZDuoejM-_" target="_blank" rel="external">http://baike.baidu.com/link?url=eXfWWy4ai-a7PkrsYHsqCrRGzRJYoF4l7WJStF4HoTMMwDeMrFtcnOICK0BM1QfwAjluEvrwfV5M9ZDuoejM-_</a></li>
+</ol>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://yoursite.com/20150727/jsonp/" data-id="ciu0lhm5k001b3kl1n9ymi7v2" class="article-share-link">分享到</a><div class="tags"><a href="/tags/Java/">Java</a></div><div class="post-nav"><a href="/20150830/shenjiaoxu/" class="pre">临《怀仁集王羲之书圣教序》</a><a href="/20150715/learngit-0/" class="next">Git学习笔记</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yoursite.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Coding/">Coding</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Thinking/">Thinking</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Travelling/">Travelling</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Algorithm/" style="font-size: 15px;">Algorithm</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/GitHub/" style="font-size: 15px;">GitHub</a> <a href="/tags/Redis/" style="font-size: 15px;">Redis</a> <a href="/tags/Cache/" style="font-size: 15px;">Cache</a> <a href="/tags/AutoHotkey/" style="font-size: 15px;">AutoHotkey</a> <a href="/tags/Concurrent/" style="font-size: 15px;">Concurrent</a> <a href="/tags/并发/" style="font-size: 15px;">并发</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a> <a href="/tags/Blog/" style="font-size: 15px;">Blog</a> <a href="/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/Hadoop/" style="font-size: 15px;">Hadoop</a> <a href="/tags/Travelling/" style="font-size: 15px;">Travelling</a> <a href="/tags/Git/" style="font-size: 15px;">Git</a> <a href="/tags/network/" style="font-size: 15px;">network</a> <a href="/tags/Calligraphy/" style="font-size: 15px;">Calligraphy</a> <a href="/tags/Summary/" style="font-size: 15px;">Summary</a> <a href="/tags/Memory/" style="font-size: 15px;">Memory</a> <a href="/tags/网络/" style="font-size: 15px;">网络</a> <a href="/tags/Cookie/" style="font-size: 15px;">Cookie</a> <a href="/tags/Session/" style="font-size: 15px;">Session</a> <a href="/tags/Http/" style="font-size: 15px;">Http</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/20161008/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/20161002/站长统计/">站长统计</a></li><li class="post-list-item"><a class="post-list-link" href="/20160930/testhexobackup2/">testhexobackup2</a></li><li class="post-list-item"><a class="post-list-link" href="/20160930/hexobackup/">hexobackup</a></li><li class="post-list-item"><a class="post-list-link" href="/20160930/今天的新博客/">今天的新博客</a></li><li class="post-list-item"><a class="post-list-link" href="/20160929/react-学习清单/">react 学习清单</a></li><li class="post-list-item"><a class="post-list-link" href="/20160928/标题/">标题</a></li><li class="post-list-item"><a class="post-list-link" href="/20160928/markdown-学习笔记/">markdown 学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/20160928/学习nodejs之路/">学习nodejs之路</a></li><li class="post-list-item"><a class="post-list-link" href="/20160927/学习hexo/">学习hexo</a></li></ul></div><style>.caption{display:none;}</style><div class="widget"><div class="widget-title"><i class="fa fa-bar-chart"> visitors</i></div><a href="http://info.flagcounter.com/hBzO"><img src="http://s07.flagcounter.com/countxl/hBzO/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">Acc.</a> Powered by Xuefeng 2016
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1260509925'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1260509925%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
