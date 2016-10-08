@@ -3,7 +3,7 @@ title: react 学习清单
 date: 2016-09-29 00:51:29
 tags:
 ---
-# react-tutorial
+ react-tutorial
 a tutorial react collection and sort,let you easily get started and organized
 
 主要是搜集整理react从入门到深入的教程、工具和自己做的demo,以便日后查阅
