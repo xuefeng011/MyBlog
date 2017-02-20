@@ -1,7 +1,6 @@
-title: 好玩的Flagcounter
-categories: Coding
-tags: [Hexo, Blog]
-toc: false
+title: Flagcounter
+categories: Tools
+tags: [Tools, 筆記,Flagcounter]
 date: 2016-04-20 19:24:27
 ---
 

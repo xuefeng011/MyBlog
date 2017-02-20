@@ -1,8 +1,8 @@
 ---
 title: heroku
 date: 2016-10-12 09:45:34
-tags: [Server]
-categories: Server
+categories: Tools
+tags: [Tools, 筆記,heroku]
 ---
 
 Heroku 免费云空间

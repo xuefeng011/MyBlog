@@ -1,7 +1,8 @@
 ---
 title: react 学习清单
 date: 2016-09-29 00:51:29
-tags:
+categories: Javascript
+tags: [Javascript, 筆記,react]
 ---
  react-tutorial
 a tutorial react collection and sort,let you easily get started and organized

@@ -1,7 +1,7 @@
-title: Git学习笔记
+title: git_map
 date: 2015-07-15 23:21:42
-categories: Coding
-tags: [GitHub,Git]
+categories: Tools
+tags: [Tools, 筆記,git]
 toc: true
 ---
 

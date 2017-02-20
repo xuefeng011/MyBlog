@@ -1,7 +1,7 @@
 title: Redis几种数据结构的基本操作
 date: 2014-06-12 23:50:15
-categories: Coding
-tags: [Redis] 
+categories: Tools
+tags: [Tools, 筆記,redis]
 ---
 
 Redis的命令总是很难记，每次用到都去网上查一下，最近得空整理一下，一方面加深印象，另一方面再用的时候也方便查阅。<!-- more --> 

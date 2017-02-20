@@ -1,7 +1,8 @@
 ---
 title: markdown 学习笔记
 date: 2016-09-28 16:21:57
-tags:
+categories: Tools
+tags: [Tools, 筆記,markdown]
 ---
 使用 Cmd Markdown 编辑阅读器
 
