@@ -64,7 +64,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: maupassant
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -75,7 +75,7 @@ deploy:
   #backup
 backup:
     type: git
-    theme: maupassant
+    theme: next
     message: update MyBlog backup
     repository:
        github: git@github.com:xuefeng011/MyBlog.git,master

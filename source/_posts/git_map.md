@@ -2,13 +2,14 @@ title: git_map
 date: 2015-07-15 23:21:42
 categories: Tools
 tags: [Tools, 筆記,git]
-toc: true
 ---
 
-虽然很早就接触github，但对git的版本控制并不了解，最近开始学习使用git，对其使用简单做一些整理。<!-- more -->
+<!-- more -->
 
 ## git 介绍
 `Git`是一个开源的分布式版本控制系统，用以有效、高速的处理从很小到非常大的项目版本管理。关于她的特点[`Git`官网](http://www.git-scm.com/)是这么介绍的：   
+
+<!-- more -->
 
 > Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.  
 
