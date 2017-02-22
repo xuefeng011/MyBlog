@@ -79,3 +79,7 @@ backup:
     message: update MyBlog backup
     repository:
        github: git@github.com:xuefeng011/MyBlog.git,master
+
+server:
+  port: 4001
+  log: true
